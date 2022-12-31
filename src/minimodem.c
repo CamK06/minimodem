@@ -435,6 +435,7 @@ usage()
     "		    same       NOAA SAME 520.83 bps --sync-byte=0xAB ...\n"
     "		callerid       Bell202 CID 1200 bps\n"
     "     uic{-train,-ground}       UIC-751-3 Train/Ground 600 bps\n"
+	"		     chu       CHU Time     300 bps\n"
     );
     exit(1);
 }
@@ -879,7 +880,15 @@ main( int argc, char*argv[] )
 	bfsk_mark_f = 980;
 	bfsk_space_f = 1180;
 	bfsk_n_data_bits = 8;
-    } else {
+    } else if ( strncasecmp(modem_mode, "chu", 3) == 0 ) { // CHU time
+	bfsk_data_rate = 300;
+	bfsk_mark_f = 2225;
+	bfsk_space_f = 2025;
+	bfsk_n_data_bits = 8;
+	bfsk_nstartbits = 1;
+	bfsk_nstopbits = 2;
+	} 
+	else {
 	bfsk_data_rate = atof(modem_mode);
 	if ( bfsk_n_data_bits == 0 )
 	    bfsk_n_data_bits = 8;
