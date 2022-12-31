@@ -90,3 +90,7 @@ databits_decode_uic_ground( char *dataout_p, unsigned int dataout_size,
 unsigned int
 databits_decode_uic_train( char *dataout_p, unsigned int dataout_size,
 	unsigned long long bits, unsigned int n_databits );
+
+unsigned int
+databits_decode_chu( char *dataout_p, unsigned int dataout_size,
+	unsigned long long bits, unsigned int n_databits );

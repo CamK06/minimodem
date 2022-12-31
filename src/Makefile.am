@@ -50,6 +50,7 @@ DATABITS_SRC = \
 	databits_ascii.c \
 	databits_binary.c \
 	databits_callerid.c \
+	databits_chu.c \
 	databits_baudot.c $(BAUDOT_SRC) \
 	databits_uic.c $(UIC_SRC)
 

@@ -887,6 +887,7 @@ main( int argc, char*argv[] )
 	bfsk_n_data_bits = 8;
 	bfsk_nstartbits = 1;
 	bfsk_nstopbits = 2;
+	bfsk_databits_decode = databits_decode_chu;
 	} 
 	else {
 	bfsk_data_rate = atof(modem_mode);
