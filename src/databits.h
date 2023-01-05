@@ -17,6 +17,10 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <stdbool.h>
+
+extern bool chu_do_systime;
+
 // Reverses the ordering of the bits on an integer
 static inline unsigned long long
 bit_reverse(unsigned long long value,

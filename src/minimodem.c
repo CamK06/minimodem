@@ -426,6 +426,7 @@ usage()
     "		    --print-filter\n"
     "		    --print-eot\n"
     "		    --tx-carrier\n"
+	"		    --chu-sysclock\n"
     "		{baudmode}\n"
     "	    any_number_N       Bell-like      N bps --ascii\n"
     "		    1200       Bell202     1200 bps --ascii\n"
@@ -435,7 +436,7 @@ usage()
     "		    same       NOAA SAME 520.83 bps --sync-byte=0xAB ...\n"
     "		callerid       Bell202 CID 1200 bps\n"
     "     uic{-train,-ground}       UIC-751-3 Train/Ground 600 bps\n"
-	"		     chu       CHU Time     300 bps\n"
+	"		     chu       CHU time     300 bps\n"
     );
     exit(1);
 }
@@ -586,7 +587,8 @@ main( int argc, char*argv[] )
 	MINIMODEM_OPT_PRINT_FILTER,
 	MINIMODEM_OPT_XRXNOISE,
 	MINIMODEM_OPT_PRINT_EOT,
-	MINIMODEM_OPT_TXCARRIER
+	MINIMODEM_OPT_TXCARRIER,
+	MINIMODEM_OPT_CHU_SYSCLOCK
     };
 
     while ( 1 ) {
@@ -630,6 +632,7 @@ main( int argc, char*argv[] )
 	    { "print-eot",	0, 0, MINIMODEM_OPT_PRINT_EOT },
 	    { "Xrxnoise",	1, 0, MINIMODEM_OPT_XRXNOISE },
 	    { "tx-carrier",      0, 0, MINIMODEM_OPT_TXCARRIER },
+		{ "chu-sysclock",   0, 0, MINIMODEM_OPT_CHU_SYSCLOCK },
 	    { 0 }
 	};
 	c = getopt_long(argc, argv, "Vtrc:l:ai875u:f:b:v:M:S:T:qs::A::R:",
@@ -777,6 +780,9 @@ main( int argc, char*argv[] )
 	    case MINIMODEM_OPT_PRINT_EOT:
 			tx_print_eot = 1;
 			break;
+		case MINIMODEM_OPT_CHU_SYSCLOCK:
+			chu_do_systime = true;
+			break;
 	    default:
 			usage();
 	}
@@ -881,6 +887,10 @@ main( int argc, char*argv[] )
 	bfsk_space_f = 1180;
 	bfsk_n_data_bits = 8;
     } else if ( strncasecmp(modem_mode, "chu", 3) == 0 ) { // CHU time
+	if ( TX_mode ) {
+	    fprintf(stderr, "E: chu --tx mode is not supported.\n");
+	    return 1;
+	}
 	bfsk_data_rate = 300;
 	bfsk_mark_f = 2225;
 	bfsk_space_f = 2025;
