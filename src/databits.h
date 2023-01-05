@@ -20,6 +20,7 @@
 #include <stdbool.h>
 
 extern bool chu_do_systime;
+extern int chu_seconds_offset;
 
 // Reverses the ordering of the bits on an integer
 static inline unsigned long long

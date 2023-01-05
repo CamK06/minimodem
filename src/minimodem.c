@@ -427,6 +427,7 @@ usage()
     "		    --print-eot\n"
     "		    --tx-carrier\n"
 	"		    --chu-sysclock\n"
+	"		    --chu-offset {n}	Seconds added to decoded CHU time default: 2s\n"
     "		{baudmode}\n"
     "	    any_number_N       Bell-like      N bps --ascii\n"
     "		    1200       Bell202     1200 bps --ascii\n"
@@ -436,7 +437,7 @@ usage()
     "		    same       NOAA SAME 520.83 bps --sync-byte=0xAB ...\n"
     "		callerid       Bell202 CID 1200 bps\n"
     "     uic{-train,-ground}       UIC-751-3 Train/Ground 600 bps\n"
-	"		     chu       CHU time     300 bps\n"
+	"		     chu       CHU time     300 bps --quiet\n"
     );
     exit(1);
 }
@@ -588,7 +589,8 @@ main( int argc, char*argv[] )
 	MINIMODEM_OPT_XRXNOISE,
 	MINIMODEM_OPT_PRINT_EOT,
 	MINIMODEM_OPT_TXCARRIER,
-	MINIMODEM_OPT_CHU_SYSCLOCK
+	MINIMODEM_OPT_CHU_SYSCLOCK,
+	MINIMODEM_OPT_CHU_OFFSET
     };
 
     while ( 1 ) {
@@ -783,6 +785,8 @@ main( int argc, char*argv[] )
 		case MINIMODEM_OPT_CHU_SYSCLOCK:
 			chu_do_systime = true;
 			break;
+		case MINIMODEM_OPT_CHU_OFFSET:
+			chu_seconds_offset = atoi(optarg);
 	    default:
 			usage();
 	}
@@ -898,6 +902,8 @@ main( int argc, char*argv[] )
 	bfsk_nstartbits = 1;
 	bfsk_nstopbits = 2;
 	bfsk_databits_decode = databits_decode_chu;
+	expect_n_bits = 10;
+	quiet_mode = 1;
 	} 
 	else {
 	bfsk_data_rate = atof(modem_mode);

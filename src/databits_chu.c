@@ -14,6 +14,7 @@
 #define CHU_FRAME_B 0x01
 
 bool chu_do_systime = false;
+int chu_seconds_offset = 2;
 static int chu_frametype = -1;
 static int chu_ndata = 0;
 static int chu_year = 0;
@@ -68,7 +69,7 @@ databits_decode_chu( char *dataout_p, unsigned int dataout_size,
         int day = (chu_buf[0] & 0x0F)*100 + ((chu_buf[1] & 0xF0)>>4)*10 + (chu_buf[1] & 0x0F);
         int hour = ((chu_buf[2] & 0xF0)>>4)*10 + (chu_buf[2] & 0x0F);
         int minute = ((chu_buf[3] & 0xF0)>>4)*10 + (chu_buf[3] & 0x0F);
-        int second = ((chu_buf[4] & 0xF0)>>4)*10 + (chu_buf[4] & 0x0F);
+        int second = ((chu_buf[4] & 0xF0)>>4)*10 + (chu_buf[4] & 0x0F) + chu_seconds_offset;
 
         // Convert the date-time info into a format we can work with
         time_t t_utc = time(NULL);
