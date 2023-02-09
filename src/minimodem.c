@@ -635,6 +635,7 @@ main( int argc, char*argv[] )
 	    { "Xrxnoise",	1, 0, MINIMODEM_OPT_XRXNOISE },
 	    { "tx-carrier",      0, 0, MINIMODEM_OPT_TXCARRIER },
 		{ "chu-sysclock",   0, 0, MINIMODEM_OPT_CHU_SYSCLOCK },
+		{ "chu-offset",    1, 0, MINIMODEM_OPT_CHU_OFFSET},
 	    { 0 }
 	};
 	c = getopt_long(argc, argv, "Vtrc:l:ai875u:f:b:v:M:S:T:qs::A::R:",
@@ -787,6 +788,7 @@ main( int argc, char*argv[] )
 			break;
 		case MINIMODEM_OPT_CHU_OFFSET:
 			chu_seconds_offset = atoi(optarg);
+			break;
 	    default:
 			usage();
 	}
