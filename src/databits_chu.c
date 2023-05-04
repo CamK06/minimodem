@@ -96,10 +96,10 @@ databits_decode_chu( char *dataout_p, unsigned int dataout_size,
             struct timeval tv;
             tv.tv_sec = t_local;
             tv.tv_usec = 0;
-            if(settimeofday(&tv, NULL))
-                dataout_n += sprintf(dataout_p+dataout_n, "System clock set successfully\n");
-            else
+            if(settimeofday(&tv, NULL) != 0)
                 dataout_n += sprintf(dataout_p+dataout_n, "Failed to set system clock\n");
+            else
+                dataout_n += sprintf(dataout_p+dataout_n, "System clock set successfully\n");
         }
     }
     else if(chu_frametype == CHU_FRAME_B) {
