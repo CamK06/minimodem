@@ -427,7 +427,7 @@ usage()
     "		    --print-eot\n"
     "		    --tx-carrier\n"
 	"		    --chu-sysclock\n"
-	"		    --chu-offset {n}	Seconds added to decoded CHU time default: 2s\n"
+	"		    --chu-offset {n}	Seconds added to decoded CHU time\n"
 	"		    --chu-exit	Exit after decoding CHU time\n"
     "		{baudmode}\n"
     "	    any_number_N       Bell-like      N bps --ascii\n"
@@ -790,7 +790,7 @@ main( int argc, char*argv[] )
 			chu_do_systime = true;
 			break;
 		case MINIMODEM_OPT_CHU_OFFSET:
-			chu_seconds_offset = atoi(optarg);
+			chu_seconds_offset = atof(optarg);
 			break;
 		case MINIMODEM_OPT_CHU_EXIT:
 			chu_exit_on_sync = true;

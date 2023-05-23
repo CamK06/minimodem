@@ -15,7 +15,7 @@
 
 bool chu_do_systime = false;
 bool chu_exit_on_sync = false;
-int chu_seconds_offset = 2;
+float chu_seconds_offset = 0;
 static int chu_frametype = -1;
 static int chu_ndata = 0;
 static int chu_year = 0;
@@ -71,6 +71,7 @@ databits_decode_chu( char *dataout_p, unsigned int dataout_size,
         int hour = ((chu_buf[2] & 0xF0)>>4)*10 + (chu_buf[2] & 0x0F);
         int minute = ((chu_buf[3] & 0xF0)>>4)*10 + (chu_buf[3] & 0x0F);
         int second = ((chu_buf[4] & 0xF0)>>4)*10 + (chu_buf[4] & 0x0F) + chu_seconds_offset;
+        int usec = (((chu_buf[4] & 0xF0)>>4)*10 + (chu_buf[4] & 0x0F) * 100000) + (chu_seconds_offset * 100000);
 
         // Convert the date-time info into a format we can work with
         time_t t_utc = time(NULL);
@@ -96,7 +97,7 @@ databits_decode_chu( char *dataout_p, unsigned int dataout_size,
         if(chu_do_systime) {
             struct timeval tv;
             tv.tv_sec = t_local;
-            tv.tv_usec = 0;
+            tv.tv_usec = usec-=__timezone*1000000;
             if(settimeofday(&tv, NULL) != 0)
                 dataout_n += sprintf(dataout_p+dataout_n, "Failed to set system clock\n");
             else {
