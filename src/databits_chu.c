@@ -14,6 +14,7 @@
 #define CHU_FRAME_B 0x01
 
 bool chu_do_systime = false;
+bool chu_exit_on_sync = false;
 int chu_seconds_offset = 2;
 static int chu_frametype = -1;
 static int chu_ndata = 0;
@@ -98,8 +99,11 @@ databits_decode_chu( char *dataout_p, unsigned int dataout_size,
             tv.tv_usec = 0;
             if(settimeofday(&tv, NULL) != 0)
                 dataout_n += sprintf(dataout_p+dataout_n, "Failed to set system clock\n");
-            else
+            else {
                 dataout_n += sprintf(dataout_p+dataout_n, "System clock set successfully\n");
+                if(chu_exit_on_sync)
+                    exit(0);
+            }
         }
     }
     else if(chu_frametype == CHU_FRAME_B) {

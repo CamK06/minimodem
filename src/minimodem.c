@@ -428,6 +428,7 @@ usage()
     "		    --tx-carrier\n"
 	"		    --chu-sysclock\n"
 	"		    --chu-offset {n}	Seconds added to decoded CHU time default: 2s\n"
+	"		    --chu-exit	Exit after decoding CHU time\n"
     "		{baudmode}\n"
     "	    any_number_N       Bell-like      N bps --ascii\n"
     "		    1200       Bell202     1200 bps --ascii\n"
@@ -590,7 +591,8 @@ main( int argc, char*argv[] )
 	MINIMODEM_OPT_PRINT_EOT,
 	MINIMODEM_OPT_TXCARRIER,
 	MINIMODEM_OPT_CHU_SYSCLOCK,
-	MINIMODEM_OPT_CHU_OFFSET
+	MINIMODEM_OPT_CHU_OFFSET,
+	MINIMODEM_OPT_CHU_EXIT
     };
 
     while ( 1 ) {
@@ -636,6 +638,7 @@ main( int argc, char*argv[] )
 	    { "tx-carrier",      0, 0, MINIMODEM_OPT_TXCARRIER },
 		{ "chu-sysclock",   0, 0, MINIMODEM_OPT_CHU_SYSCLOCK },
 		{ "chu-offset",    1, 0, MINIMODEM_OPT_CHU_OFFSET},
+		{ "chu-exit",    1, 0, MINIMODEM_OPT_CHU_EXIT},
 	    { 0 }
 	};
 	c = getopt_long(argc, argv, "Vtrc:l:ai875u:f:b:v:M:S:T:qs::A::R:",
@@ -788,6 +791,9 @@ main( int argc, char*argv[] )
 			break;
 		case MINIMODEM_OPT_CHU_OFFSET:
 			chu_seconds_offset = atoi(optarg);
+			break;
+		case MINIMODEM_OPT_CHU_EXIT:
+			chu_exit_on_sync = true;
 			break;
 	    default:
 			usage();

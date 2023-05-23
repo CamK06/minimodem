@@ -20,6 +20,7 @@
 #include <stdbool.h>
 
 extern bool chu_do_systime;
+extern bool chu_exit_on_sync;
 extern int chu_seconds_offset;
 
 // Reverses the ordering of the bits on an integer
