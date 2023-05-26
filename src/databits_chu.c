@@ -4,11 +4,13 @@
  * CHU time decoder
  */
 
+#include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
 #include <time.h>
 #include <sys/time.h>
+#include <errno.h>
 
 #define CHU_FRAME_A 0x00
 #define CHU_FRAME_B 0x01
@@ -70,7 +72,7 @@ databits_decode_chu( char *dataout_p, unsigned int dataout_size,
         int day = (chu_buf[0] & 0x0F)*100 + ((chu_buf[1] & 0xF0)>>4)*10 + (chu_buf[1] & 0x0F);
         int hour = ((chu_buf[2] & 0xF0)>>4)*10 + (chu_buf[2] & 0x0F);
         int minute = ((chu_buf[3] & 0xF0)>>4)*10 + (chu_buf[3] & 0x0F);
-        int second = ((chu_buf[4] & 0xF0)>>4)*10 + (chu_buf[4] & 0x0F);
+        int second = ((chu_buf[4] & 0xF0)>>4)*10 + (chu_buf[4] & 0x0F) + (int)chu_seconds_offset;
 
         // Convert the date-time info into a format we can work with
         time_t t_utc = time(NULL);
@@ -92,9 +94,14 @@ databits_decode_chu( char *dataout_p, unsigned int dataout_size,
         if(chu_do_systime) {
             struct timeval tv;
             tv.tv_sec = t_local;
-            tv.tv_usec = (t_local*1000000)-(__timezone*1000000)+(int)(chu_seconds_offset*1000000);
-            if(settimeofday(&tv, NULL) < 0)
+            tv.tv_usec = ((float)chu_seconds_offset - (int)chu_seconds_offset) * 1000000;
+            if(settimeofday(&tv, NULL) < 0) {
                 dataout_n += sprintf(dataout_p+dataout_n, "Failed to set system clock\n");
+            
+                char *errstr = strerror(errno);
+                dataout_n += sprintf(dataout_p+dataout_n, "Error: %s\n", errstr);
+
+                }
             else {
                 dataout_n += sprintf(dataout_p+dataout_n, "System clock set successfully\n");
                 if(chu_exit_on_sync)
