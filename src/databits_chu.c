@@ -93,7 +93,7 @@ databits_decode_chu( char *dataout_p, unsigned int dataout_size,
             struct timeval tv;
             tv.tv_sec = t_local;
             tv.tv_usec = (t_local*1000000)-(__timezone*1000000)+(int)(chu_seconds_offset*1000000);
-            if(settimeofday(&tv, NULL) != 0)
+            if(settimeofday(&tv, NULL) < 0)
                 dataout_n += sprintf(dataout_p+dataout_n, "Failed to set system clock\n");
             else {
                 dataout_n += sprintf(dataout_p+dataout_n, "System clock set successfully\n");
