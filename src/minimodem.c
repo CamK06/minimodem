@@ -638,7 +638,7 @@ main( int argc, char*argv[] )
 	    { "tx-carrier",      0, 0, MINIMODEM_OPT_TXCARRIER },
 		{ "chu-sysclock",   0, 0, MINIMODEM_OPT_CHU_SYSCLOCK },
 		{ "chu-offset",    1, 0, MINIMODEM_OPT_CHU_OFFSET},
-		{ "chu-exit",    1, 0, MINIMODEM_OPT_CHU_EXIT},
+		{ "chu-exit",    0, 0, MINIMODEM_OPT_CHU_EXIT},
 	    { 0 }
 	};
 	c = getopt_long(argc, argv, "Vtrc:l:ai875u:f:b:v:M:S:T:qs::A::R:",
