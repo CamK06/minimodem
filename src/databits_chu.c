@@ -97,14 +97,12 @@ databits_decode_chu( char *dataout_p, unsigned int dataout_size,
             tv.tv_usec = ((float)chu_seconds_offset - (int)chu_seconds_offset) * 1000000;
             if(settimeofday(&tv, NULL) < 0) {
                 dataout_n += sprintf(dataout_p+dataout_n, "Failed to set system clock\n");
-            
                 char *errstr = strerror(errno);
                 dataout_n += sprintf(dataout_p+dataout_n, "Error: %s\n", errstr);
-
-                }
+            }
             else {
                 dataout_n += sprintf(dataout_p+dataout_n, "System clock set successfully\n");
-                if(chu_exit_on_sync)
+                if(chu_exit_on_sync && chu_year > 0) // If we exit on sync and got the year from CHU
                     exit(0);
             }
         }
